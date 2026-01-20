@@ -1,0 +1,215 @@
+/* ========================================
+   Add Habit Form - Professional & Clean
+   ======================================== */
+
+.add-habit-modal {
+    max-width: 440px;
+}
+
+/* Input Group Spacing */
+.input-group {
+    margin-top: var(--space-6);
+}
+
+.input-group:first-child {
+    margin-top: 0;
+}
+
+/* Clean Professional Input */
+.input-clean {
+    width: 100%;
+    font-size: 14px;
+    padding: var(--space-3);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    transition: all 300ms var(--ease-out);
+}
+
+.input-clean:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.input-clean::placeholder {
+    color: var(--text-muted);
+}
+
+/* Minimal Labels */
+.input-label-minimal {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+    display: block;
+}
+
+/* Icon Grid - Minimal */
+.icon-grid-minimal {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-2);
+}
+
+.icon-btn-minimal {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 300ms var(--ease-out);
+}
+
+.icon-btn-minimal:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+}
+
+.icon-btn-minimal.selected {
+    border-color: var(--primary);
+    background: rgba(249, 115, 22, 0.05);
+    color: var(--primary);
+}
+
+/* Color Picker - Dots Only */
+.color-picker-minimal {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.color-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 300ms var(--ease-out);
+    position: relative;
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+}
+
+.color-dot.selected {
+    border-color: var(--text);
+    transform: scale(1.15);
+}
+
+.color-dot.selected::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+/* Days Grid - Minimal */
+.days-grid-minimal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--space-2);
+}
+
+.day-btn-minimal {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 300ms var(--ease-out);
+}
+
+.day-btn-minimal:hover {
+    color: var(--text);
+    border-color: var(--text-muted);
+}
+
+.day-btn-minimal.selected {
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.05);
+    border-color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .icon-grid-minimal {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Tags Grid */
+.tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 300ms var(--ease-out);
+}
+
+.tag-button:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.tag-button.selected {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.05);
+}
+
+.tag-button .tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.add-tag-btn {
+    border-style: dashed;
+}
+
+.add-tag-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Hint Text */
+.hint-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border);
+    margin-top: var(--space-4);
+}
+
+[data-theme="light"] .hint-text {
+    background: rgba(0, 0, 0, 0.02);
+}

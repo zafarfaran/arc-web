@@ -1,0 +1,8 @@
+/* ========================================
+   Mobile Navigation - Hidden (using menu button instead)
+   ======================================== */
+
+/* Mobile nav is now replaced by the overlay menu button */
+.mobile-nav {
+    display: none;
+}

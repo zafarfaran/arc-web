@@ -1,0 +1,110 @@
+.focus-chart-container {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Header */
+.focus-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.focus-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.focus-icon {
+    color: var(--primary);
+    opacity: 0.7;
+}
+
+.focus-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.focus-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+}
+
+.focus-total {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.focus-total-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Chart */
+.focus-chart {
+    width: 100%;
+    margin: 0 -4px;
+}
+
+/* Footer */
+.focus-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.focus-today {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+}
+
+/* Tooltip */
+.focus-tooltip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(8px);
+}
+
+.focus-tooltip .tooltip-day {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin: 0 0 2px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.focus-tooltip .tooltip-mins {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+}
+
+/* Light mode */
+[data-theme="light"] .focus-chart-container {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .focus-today {
+    background: rgba(0, 0, 0, 0.04);
+}

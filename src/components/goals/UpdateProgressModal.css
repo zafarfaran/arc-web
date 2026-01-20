@@ -1,0 +1,333 @@
+/* ========================================
+   Update Progress Modal - Increment Based
+   ======================================== */
+
+.update-progress-modal {
+    max-width: 340px;
+    padding: var(--space-4);
+}
+
+/* Modal Animations */
+.modal-fade-in {
+    animation: fadeIn 300ms var(--ease-out);
+}
+
+.modal-slide-up {
+    animation: slideUp 400ms var(--ease-out);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Current Status Display */
+.current-status {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    padding: var(--space-3) 0;
+    margin-bottom: var(--space-3);
+}
+
+.status-current {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.status-divider {
+    font-size: 20px;
+    color: var(--border);
+    margin: 0 4px;
+}
+
+.status-target {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.status-unit {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-left: 6px;
+}
+
+/* Progress Preview */
+.progress-preview {
+    margin-bottom: var(--space-4);
+}
+
+.progress-bar-container {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--space-2);
+}
+
+.progress-bar-old {
+    position: absolute;
+    height: 100%;
+    background: var(--text-muted);
+    opacity: 0.2;
+    border-radius: 2px;
+}
+
+.progress-bar-new {
+    position: absolute;
+    height: 100%;
+    border-radius: 2px;
+    transition: width 400ms var(--ease-out);
+}
+
+.progress-labels {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.progress-labels .arrow {
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.progress-labels .new-percent {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Increment Input Container */
+.increment-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.increment-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.increment-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.1);
+}
+
+.increment-field {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: var(--space-2) var(--space-3);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.increment-prefix {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--success);
+}
+
+.increment-input {
+    width: 70px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    -moz-appearance: textfield;
+}
+
+.increment-input::-webkit-outer-spin-button,
+.increment-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.increment-input:focus {
+    outline: none;
+}
+
+.increment-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+
+.increment-unit {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Quick Add Row */
+.quick-add-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+
+.quick-add-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.quick-add-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.05);
+}
+
+/* New Total Preview */
+.new-total {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: var(--space-3);
+    padding: var(--space-2);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+}
+
+.new-total strong {
+    color: var(--text);
+}
+
+/* Input Group */
+.update-progress-modal .input-group {
+    margin-top: var(--space-4);
+}
+
+/* Input Label - Minimal */
+.update-progress-modal .input-label-minimal {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Clean Input */
+.update-progress-modal .input-clean {
+    width: 100%;
+    font-size: 12px;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: var(--radius-md);
+    color: var(--text);
+    transition: all 200ms var(--ease-out);
+}
+
+.update-progress-modal .input-clean:hover {
+    border-color: var(--border-hover);
+}
+
+.update-progress-modal .input-clean:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.update-progress-modal .input-clean::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+.update-progress-modal .input-group.has-error .increment-field {
+    border-color: var(--error);
+}
+
+.error-message {
+    font-size: 11px;
+    color: var(--error);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* Modal Footer */
+.update-progress-modal .modal-footer {
+    padding-top: var(--space-3);
+    margin-top: var(--space-3);
+}
+
+.update-progress-modal .modal-title {
+    font-size: 14px;
+}

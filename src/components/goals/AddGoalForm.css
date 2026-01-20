@@ -1,0 +1,381 @@
+/* ========================================
+   Add Goal Form - Ultra Minimal & Professional
+   ======================================== */
+
+.add-goal-modal {
+    max-width: 480px;
+}
+
+/* Modal Animations */
+.modal-fade-in {
+    animation: fadeIn 300ms var(--ease-out);
+}
+
+.modal-slide-up {
+    animation: slideUp 400ms var(--ease-out);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Input Group Spacing - Tighter */
+.add-goal-modal .input-group {
+    margin-top: var(--space-4);
+}
+
+.add-goal-modal .input-group:first-child {
+    margin-top: 0;
+}
+
+/* Input Row */
+.input-row {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.input-row .input-group {
+    margin-top: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+/* Clean Input - More Minimal */
+.add-goal-modal .input-clean {
+    width: 100%;
+    font-size: 14px;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border);
+    background: transparent;
+    border-radius: var(--radius-md);
+    color: var(--text);
+    transition: all 200ms var(--ease-out);
+}
+
+.add-goal-modal .input-clean:hover {
+    border-color: var(--border-hover);
+}
+
+.add-goal-modal .input-clean:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.add-goal-modal .input-clean::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* Minimal Label */
+.input-label-minimal {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Category Grid - Compact */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+}
+
+.category-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--space-3) var(--space-2);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms var(--ease-out);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.category-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.category-btn.selected {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: transparent;
+}
+
+.category-btn svg {
+    opacity: 0.7;
+}
+
+.category-btn.selected svg {
+    opacity: 1;
+}
+
+/* Color Picker - Smaller Dots */
+.color-picker-minimal {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.color-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 200ms var(--ease-out);
+    opacity: 0.8;
+}
+
+.color-dot:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.color-dot.selected {
+    border-color: var(--text);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* Tags Grid - Minimal */
+.add-goal-modal .tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.add-goal-modal .tag-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 200ms var(--ease-out);
+}
+
+.add-goal-modal .tag-button:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.add-goal-modal .tag-button.selected {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.add-goal-modal .tag-button .tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.add-goal-modal .add-tag-btn {
+    border-style: dashed;
+    opacity: 0.7;
+}
+
+.add-goal-modal .add-tag-btn:hover {
+    opacity: 1;
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Validation Styles */
+.add-goal-modal .input-group.has-error .input-clean {
+    border-color: var(--error);
+}
+
+.error-message {
+    font-size: 11px;
+    color: var(--error);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* Modal Footer - Tighter */
+.add-goal-modal .modal-footer {
+    padding-top: var(--space-4);
+    margin-top: var(--space-4);
+}
+
+/* Goal Type Toggle - Minimal Inline Pills */
+.goal-type-toggle {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+.goal-type-toggle .type-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms var(--ease-out);
+}
+
+.goal-type-toggle .type-btn span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.goal-type-toggle .type-btn small {
+    display: none;
+}
+
+.goal-type-toggle .type-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.goal-type-toggle .type-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.goal-type-toggle .type-btn.selected {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.08);
+}
+
+/* Milestone Editor */
+.milestone-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.milestone-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+}
+
+.milestone-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-light);
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.milestone-title {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text);
+}
+
+.milestone-remove {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 200ms ease;
+}
+
+.milestone-remove:hover {
+    color: var(--error);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.milestone-add {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.milestone-add .input-clean {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

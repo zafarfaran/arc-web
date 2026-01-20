@@ -1,0 +1,215 @@
+/* ========================================
+   Bottom Dock Navigation - Sleek Professional
+   ======================================== */
+
+.bottom-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: var(--space-3);
+    padding-bottom: var(--space-4);
+    z-index: 150;
+    pointer-events: none;
+}
+
+.dock-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 6px 10px;
+    background: rgba(18, 18, 20, 0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity var(--duration-base) var(--ease-out),
+        transform var(--duration-base) var(--ease-out);
+}
+
+/* Individual dock item */
+.dock-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 180ms var(--ease-out);
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.dock-item:hover {
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dock-item.active {
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.12);
+}
+
+/* Icon wrapper for badge positioning */
+.dock-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dock-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 180ms var(--ease-out);
+}
+
+/* Count badge */
+.dock-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.4);
+    animation: badge-pop 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes badge-pop {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Divider */
+.dock-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 0 4px;
+}
+
+/* Theme toggle wrapper */
+.theme-toggle-wrapper {
+    padding: 8px;
+}
+
+/* ========================================
+   Light Mode
+   ======================================== */
+
+[data-theme="light"] .dock-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .dock-item {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .dock-item:hover {
+    color: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .dock-item.active {
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.1);
+}
+
+[data-theme="light"] .dock-divider {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* ========================================
+   Mobile - Full Width
+   ======================================== */
+
+@media (max-width: 768px) {
+    .bottom-dock {
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .dock-container {
+        width: 100%;
+        justify-content: space-around;
+        gap: 0;
+        padding: 8px 12px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .dock-item {
+        padding: 10px 12px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .dock-item:hover {
+        transform: none;
+    }
+
+    .dock-badge {
+        top: -4px;
+        right: -6px;
+        min-width: 14px;
+        height: 14px;
+        font-size: 8px;
+    }
+
+    .dock-divider {
+        display: none;
+    }
+
+    .theme-toggle-wrapper {
+        padding: 6px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .dock-item {
+        padding: 8px;
+    }
+
+    .dock-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+}

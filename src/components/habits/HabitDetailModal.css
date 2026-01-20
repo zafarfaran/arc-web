@@ -1,0 +1,322 @@
+/* ========================================
+   Habit Detail Modal - With Animations
+   ======================================== */
+
+.habit-detail-modal {
+    max-width: 600px;
+}
+
+/* Modal Entrance Animations */
+.modal-fade-in {
+    animation: fadeIn 300ms var(--ease-out);
+}
+
+.modal-slide-up {
+    animation: slideUp 400ms var(--ease-out);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Title */
+.habit-detail-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.habit-icon-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stats Row - Sleek Grid */
+.habit-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    padding-bottom: 0;
+    border: none;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 250ms var(--ease-out);
+}
+
+/* Light mode override for stat cards */
+[data-theme="light"] .stat-card {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+
+[data-theme="light"] .stat-card:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.stat-fade-in {
+    animation: statFadeIn 500ms var(--ease-out) both;
+}
+
+@keyframes statFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+}
+
+.streak-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.streak-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    filter: drop-shadow(0 0 8px var(--primary-glow));
+}
+
+.stat-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Calendar */
+.calendar-section {
+    margin-bottom: var(--space-6);
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+}
+
+.calendar-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Progress Bar - Minimal */
+.calendar-progress {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+}
+
+.calendar-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 800ms var(--ease-out);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 300ms var(--ease-out);
+    position: relative;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Staggered Calendar Day Fade In */
+.calendar-day-fade {
+    animation: calendarDayFade 400ms var(--ease-out) both;
+}
+
+@keyframes calendarDayFade {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.calendar-day.empty {
+    visibility: hidden;
+}
+
+/* Target days - with colored dot indicator */
+.calendar-day.target {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--border);
+}
+
+.calendar-day.target::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--habit-color, var(--primary));
+    opacity: 0.6;
+}
+
+/* Completed days - filled with habit color */
+.calendar-day.completed {
+    background: var(--habit-color, var(--primary));
+    color: #fff;
+    font-weight: 600;
+    border-color: var(--habit-color, var(--primary));
+}
+
+/* Hide dot on completed days */
+.calendar-day.completed::after {
+    display: none;
+}
+
+/* Today - ring indicator */
+.calendar-day.today {
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.calendar-day.today.completed {
+    box-shadow: 0 0 0 2px var(--habit-color, var(--primary));
+}
+
+/* Hover states */
+.calendar-day.target:hover:not(.completed) {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Delete Confirmation */
+.delete-confirm-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--error);
+    font-weight: 500;
+}
+
+.btn-danger {
+    background: var(--error);
+    color: #fff;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: all 300ms var(--ease-out);
+}
+
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .habit-stats-row {
+        gap: var(--space-4);
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .calendar-grid {
+        gap: 2px;
+    }
+
+    .calendar-day {
+        font-size: 11px;
+    }
+}

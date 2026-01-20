@@ -1,0 +1,80 @@
+# Dependencies
+node_modules
+functions/node_modules
+
+# Build outputs
+dist
+dist-ssr
+build
+.output
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+database-debug.log*
+pubsub-debug.log*
+
+# Firebase
+.firebase
+firebase-export-*
+.firebaserc
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# Testing
+coverage
+.nyc_output
+
+# Cache
+.cache
+.parcel-cache
+.eslintcache
+*.tsbuildinfo
+
+# Backup folders
+*_backup
+*.backup
+
+# Temporary files
+*.tmp
+*.temp
+.tmp
+.temp
+
+# Debug
+*.debug
+
+# Local config
+*.local

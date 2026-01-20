@@ -1,0 +1,234 @@
+/* ========================================
+   Task Cards - Matching TodoItem Sticky Note Style
+   ======================================== */
+
+/* Use same sticky note colors as TodoItem */
+.task-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* Sticky Note Colors - matching TodoItem exactly */
+.task-card {
+    --sticky-yellow: rgba(255, 220, 100, 0.95);
+    --sticky-pink: rgba(255, 140, 160, 0.95);
+    --sticky-orange: rgba(255, 180, 100, 0.95);
+    --sticky-green: rgba(120, 230, 160, 0.95);
+}
+
+/* Light mode - softer pastel shades */
+[data-theme="light"] .task-card {
+    --sticky-yellow: rgba(255, 250, 205, 0.95);
+    --sticky-pink: rgba(255, 220, 230, 0.95);
+    --sticky-orange: rgba(255, 240, 220, 0.95);
+    --sticky-green: rgba(220, 255, 235, 0.95);
+}
+
+.task-card {
+    position: relative;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 12px;
+    min-width: 140px;
+    max-width: 180px;
+    background: var(--sticky-yellow);
+    box-shadow:
+        2px 4px 8px rgba(0, 0, 0, 0.12),
+        0 1px 2px rgba(0, 0, 0, 0.08);
+    transform: rotate(-1deg);
+    transition: all 250ms var(--ease-out);
+    animation: stickySlide 0.4s ease backwards;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+/* Priority-based colors - matching TodoItem */
+.task-card.priority-high {
+    background: var(--sticky-pink);
+}
+
+.task-card.priority-medium {
+    background: var(--sticky-orange);
+}
+
+.task-card.priority-low {
+    background: var(--sticky-green);
+}
+
+/* Tape effect at top - matching TodoItem */
+.task-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.task-card:nth-child(even) {
+    transform: rotate(1deg);
+}
+
+.task-card:nth-child(3n) {
+    transform: rotate(-0.5deg);
+}
+
+@keyframes stickySlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px) rotate(-2deg);
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.task-card:hover {
+    transform: translateY(-4px) rotate(1deg);
+    box-shadow:
+        4px 8px 16px rgba(0, 0, 0, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Completed state */
+.task-card.completed {
+    opacity: 0.6;
+    transform: rotate(-1deg);
+}
+
+.task-card.completed .task-text {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/* Card header */
+.task-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.task-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 250ms var(--ease-out);
+    padding: 0;
+}
+
+.task-check:hover:not(:disabled) {
+    border-color: rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.task-check.checked {
+    background: var(--success, #16a34a);
+    border-color: var(--success, #16a34a);
+    color: #fff;
+}
+
+.task-priority {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.task-text {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.task-text.done {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.task-due {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+/* Tags - matching TodoItem style */
+.task-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 6px;
+}
+
+.task-tag {
+    font-size: 8px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.task-tag-more {
+    font-size: 8px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/* View More Link */
+.task-view-more-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: var(--surface-light, rgba(255, 255, 255, 0.08));
+    border: 1px dashed var(--border, rgba(255, 255, 255, 0.12));
+    color: var(--primary, #00D4FF);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 200ms ease;
+    cursor: pointer;
+}
+
+.task-view-more-link:hover {
+    background: var(--primary-alpha, rgba(0, 212, 255, 0.1));
+    border-color: var(--primary, #00D4FF);
+    transform: translateY(-2px);
+}
+
+[data-theme="light"] .task-view-more-link {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: var(--primary, #0099CC);
+}
+
+[data-theme="light"] .task-view-more-link:hover {
+    background: rgba(0, 153, 204, 0.1);
+}

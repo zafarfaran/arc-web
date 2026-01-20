@@ -1,0 +1,817 @@
+/* ========================================
+   Tasks Screen - Sticky Note / Trello Style
+   ======================================== */
+
+.tasks-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--space-6) * 2);
+    min-height: calc(100dvh - var(--space-6) * 2);
+    position: relative;
+}
+
+/* Header */
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+.tasks-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.brand-name {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--text);
+}
+
+.tasks-header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.tasks-progress-mini {
+    display: flex;
+    align-items: center;
+}
+
+.progress-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Add Button in Header */
+.add-btn-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 300ms var(--ease-out);
+}
+
+.add-btn-header:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.add-btn-header:active {
+    transform: scale(0.95);
+}
+
+/* Minimal Progress Bar */
+.progress-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.progress-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: width 400ms var(--ease-out);
+}
+
+.progress-percent {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    min-width: 32px;
+    text-align: right;
+}
+
+/* Main Content */
+.tasks-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Filters - Sleek Segmented Control */
+.tasks-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-6);
+}
+
+.controls-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.tasks-filters {
+    display: flex;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-lg);
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: calc(var(--radius-lg) - 2px);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    cursor: pointer;
+    transition: all 250ms var(--ease-out);
+}
+
+.filter-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.filter-btn.active {
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.12);
+}
+
+/* Light mode overrides */
+[data-theme="light"] .tasks-filters {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .filter-btn:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* ========================================
+   Sticky Notes Grid
+   ======================================== */
+
+.tasks-list {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4);
+    align-content: start;
+    /* Whiteboard swap transition */
+    transition: transform 150ms ease-out, opacity 150ms ease-out;
+    transform-origin: center center;
+}
+
+/* Whiteboard swap animations */
+.tasks-list.slide-left {
+    animation: slideOutLeft 150ms ease-out forwards;
+}
+
+.tasks-list.slide-right {
+    animation: slideOutRight 150ms ease-out forwards;
+}
+
+@keyframes slideOutLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1) rotateY(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.95) rotateY(-5deg);
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1) rotateY(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(30px) scale(0.95) rotateY(5deg);
+    }
+}
+
+.tasks-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: var(--space-8) 0;
+}
+
+/* Light mode */
+[data-theme="light"] .progress-track {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* ========================================
+   Pagination Controls
+   ======================================== */
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 12px;
+}
+
+.pagination-controls.mini {
+    padding: 0;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    border: none;
+    cursor: pointer;
+    transition: all 250ms var(--ease-out);
+}
+
+.pagination-controls.mini .pagination-btn {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary);
+}
+
+.pagination-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.pagination-current {
+    color: var(--primary);
+}
+
+.pagination-separator {
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.pagination-total {
+    color: var(--text-muted);
+}
+
+/* Light mode pagination */
+[data-theme="light"] .pagination-btn {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .pagination-btn:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tasks-screen {
+        min-height: calc(100vh - 140px);
+        min-height: calc(100dvh - 140px);
+    }
+
+    .tasks-list {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: var(--space-3);
+    }
+}
+
+@media (max-width: 480px) {
+    .tasks-list {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-2);
+    }
+}
+
+/* ========================================
+   View Toggle
+   ======================================== */
+
+.view-toggle {
+    display: flex;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+}
+
+.view-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: calc(var(--radius-md) - 2px);
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    cursor: pointer;
+    transition: all 250ms var(--ease-out);
+}
+
+.view-toggle-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.view-toggle-btn.active {
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.12);
+}
+
+[data-theme="light"] .view-toggle {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .view-toggle-btn:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* ========================================
+   Habit Tracker Layout
+   ======================================== */
+
+.habit-tracker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+    min-height: 0;
+}
+
+/* Unassigned area - floating cards with easy drop zone */
+.unassigned-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    margin-bottom: var(--space-2);
+    min-height: 120px;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.01);
+    transition: all 250ms var(--ease-out);
+}
+
+.unassigned-area.drag-over {
+    background: rgba(249, 115, 22, 0.1);
+    border-color: var(--primary);
+    border-style: solid;
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.15);
+}
+
+.unassigned-area .todo-item {
+    min-width: 180px;
+    max-width: 220px;
+    min-height: 100px;
+}
+
+.unassigned-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.unassigned-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-2);
+}
+
+.unassigned-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.unassigned-pagination {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.unassigned-empty {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+/* Pagination text */
+.pagination-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Tiny pagination buttons */
+.pagination-btn.tiny {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 150ms var(--ease-out);
+}
+
+.pagination-btn.tiny:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary);
+}
+
+.pagination-btn.tiny:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Page Settings */
+.page-settings {
+    position: relative;
+}
+
+.settings-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms var(--ease-out);
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-1);
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.settings-option {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 150ms var(--ease-out);
+}
+
+.settings-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.settings-option.active {
+    background: rgba(249, 115, 22, 0.12);
+    color: var(--primary);
+}
+
+/* Light mode for settings and pagination */
+[data-theme="light"] .pagination-btn.tiny {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .pagination-btn.tiny:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .settings-btn {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .settings-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .settings-dropdown {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .settings-option:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* Light mode */
+[data-theme="light"] .unassigned-area {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+[data-theme="light"] .unassigned-area.drag-over {
+    background: rgba(249, 115, 22, 0.08);
+}
+
+/* Two columns below */
+.habit-columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    flex: 1;
+    min-height: 0;
+}
+
+
+/* Legacy kanban-board for backwards compatibility */
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    flex: 1;
+    min-height: 0;
+}
+
+.kanban-column {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    padding: var(--space-3);
+    min-height: 300px;
+    transition: all 250ms var(--ease-out);
+}
+
+.kanban-column.drag-over {
+    background: rgba(249, 115, 22, 0.08);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
+}
+
+.kanban-column[data-column="pending"] .kanban-column-title {
+    color: var(--text-muted);
+}
+
+.kanban-column[data-column="todo"] .kanban-column-title {
+    color: var(--primary);
+}
+
+.kanban-column[data-column="completed"] .kanban-column-title {
+    color: var(--success);
+}
+
+.kanban-column-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+}
+
+.kanban-column-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kanban-column-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.kanban-column-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 var(--space-2);
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.kanban-column-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.kanban-column-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: var(--space-3);
+    overflow-y: auto;
+    padding-right: var(--space-1);
+}
+
+/* Custom scrollbar for kanban columns */
+.kanban-column-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.kanban-column-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.kanban-column-content::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+}
+
+.kanban-column-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.kanban-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    color: var(--text-muted);
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+/* Kanban todo items - fixed size cards that wrap */
+.kanban-column .todo-item {
+    min-width: 160px;
+    max-width: 200px;
+    min-height: 100px;
+    flex: 0 0 auto;
+}
+
+/* Light mode */
+[data-theme="light"] .kanban-column {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .kanban-column.drag-over {
+    background: rgba(249, 115, 22, 0.06);
+}
+
+[data-theme="light"] .kanban-column-count {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* ========================================
+   Habit Tracker Responsive
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .habit-columns {
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .habit-columns {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+
+    .unassigned-area .todo-item {
+        min-width: 140px;
+        max-width: 180px;
+    }
+
+    .kanban-column {
+        min-height: 200px;
+    }
+}
+
+/* ========================================
+   Kanban Responsive (Legacy)
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .kanban-board {
+        grid-template-columns: repeat(3, minmax(200px, 1fr));
+        overflow-x: auto;
+        padding-bottom: var(--space-4);
+    }
+}
+
+@media (max-width: 768px) {
+    .kanban-board {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+
+    .kanban-column-content {
+        flex-direction: row;
+        flex-wrap: wrap;
+        overflow-y: visible;
+        overflow-x: auto;
+        gap: var(--space-2);
+    }
+
+    .kanban-column .todo-item {
+        min-width: 160px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .view-toggle {
+        padding: 2px;
+    }
+
+    .view-toggle-btn {
+        width: 28px;
+        height: 28px;
+    }
+}

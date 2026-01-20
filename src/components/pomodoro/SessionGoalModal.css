@@ -1,0 +1,61 @@
+/* ========================================
+   Session Goal Modal - Refined
+   ======================================== */
+
+.session-goal-modal {
+    max-width: 380px;
+}
+
+.session-goal-modal .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.tags-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-xs);
+    font-weight: 500;
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.tag-button:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.tag-button.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.tag-button .tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.tag-button.selected .tag-dot {
+    background: rgba(255, 255, 255, 0.8) !important;
+}

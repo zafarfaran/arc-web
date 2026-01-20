@@ -1,0 +1,149 @@
+/* ========================================
+   XP Display Component
+   ======================================== */
+
+.xp-display {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* Compact Display */
+.xp-display-compact {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.xp-rank-badge {
+    font-size: 16px;
+}
+
+.xp-total {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+}
+
+/* Full Display */
+.xp-rank-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.xp-rank-badge-large {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+.xp-rank-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rank-name {
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+.xp-total-large {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+/* Progress Section */
+.xp-progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.xp-progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.xp-progress-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width 600ms var(--ease-out);
+}
+
+.xp-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.xp-current-progress {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.xp-needed {
+    font-family: var(--font-mono);
+    opacity: 0.7;
+}
+
+/* Recent XP Section */
+.xp-recent-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.xp-recent-title {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.xp-recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.xp-recent-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-2);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-sm);
+}
+
+.xp-event-description {
+    font-size: 11px;
+    color: var(--text-muted);
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.xp-event-amount {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--success);
+}

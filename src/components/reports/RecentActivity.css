@@ -1,0 +1,203 @@
+/* ========================================
+   Recent Activity - Sleek Card Style
+   ======================================== */
+
+.recent-activity-card {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    height: 480px;
+    /* Fixed height to prevent jitter */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.recent-activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.recent-activity-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.recent-activity-filters {
+    display: flex;
+    gap: 2px;
+    background: var(--surface-light);
+    padding: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.activity-filter-btn {
+    background: transparent;
+    border: none;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.activity-filter-btn:hover {
+    color: var(--text-secondary);
+}
+
+.activity-filter-btn.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-xs);
+}
+
+.recent-activity-count {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface-light);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+}
+
+.recent-activity-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--font-xs);
+    padding: var(--space-4);
+}
+
+.recent-activity-empty svg {
+    opacity: 0.4;
+}
+
+.recent-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+    max-height: 450px;
+    flex: 1;
+}
+
+.recent-activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-fast) var(--ease-out);
+    animation: slideIn 300ms var(--ease-out) both;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.recent-activity-item:hover {
+    background: var(--surface-light);
+}
+
+.recent-activity-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.recent-activity-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.recent-activity-desc {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    /* Allow wrapping with 2-line limit */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.recent-activity-time {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.recent-activity-xp {
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+/* Pagination */
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding-top: var(--space-2);
+    margin-top: auto;
+}
+
+.pagination-btn {
+    background: var(--surface-light);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: var(--surface-button-hover);
+    color: var(--text);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}

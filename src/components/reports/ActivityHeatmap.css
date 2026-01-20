@@ -1,0 +1,226 @@
+/* ========================================
+   Refined Activity Heatmap - GitHub Style
+   ======================================== */
+
+.heatmap-container.refined {
+    background: rgba(255, 255, 255, 0.02);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.heatmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+}
+
+.heatmap-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.heatmap-meta {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface-light);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+}
+
+.heatmap-wrapper {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    /* Center to fix the gap */
+    width: 100%;
+}
+
+/* Weekday Labels */
+.weekday-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 28px;
+    /* Alignment with month labels */
+    padding-bottom: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    min-width: 32px;
+}
+
+/* Scrollable Area */
+.scroll-container {
+    overflow-x: auto;
+    overflow-y: visible;
+    /* Allow tooltip to show */
+    padding-bottom: 8px;
+    padding-top: 50px;
+    /* Reserve space for tooltip */
+    margin-top: -30px;
+    /* Pull back up to align with labels if needed, or just let it breathe */
+    -webkit-overflow-scrolling: touch;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: var(--surface-accent);
+    border-radius: 4px;
+}
+
+.heatmap-scroll-area {
+    display: flex;
+    flex-direction: column;
+    min-width: max-content;
+}
+
+/* Month Labels */
+.month-labels {
+    position: relative;
+    height: 20px;
+    margin-bottom: 4px;
+}
+
+.month-label {
+    position: absolute;
+    left: calc(var(--offset) * 18px);
+    /* Matches cell size + gap */
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* Grid Logic */
+.heatmap-grid-horizontal {
+    display: flex;
+    gap: 4px;
+}
+
+.heatmap-column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.heatmap-cell {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    position: relative;
+    transition: all 150ms var(--ease-out);
+    cursor: pointer;
+}
+
+.heatmap-cell.future {
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.heatmap-cell.today {
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 5px rgba(249, 115, 22, 0.3);
+}
+
+/* Intensity Colors - GitHub Style Palette */
+.level-0 {
+    background: var(--surface-accent);
+}
+
+.level-1 {
+    background: rgba(249, 115, 22, 0.3);
+}
+
+.level-2 {
+    background: rgba(249, 115, 22, 0.5);
+}
+
+.level-3 {
+    background: rgba(249, 115, 22, 0.8);
+}
+
+.level-4 {
+    background: var(--primary);
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.15);
+    z-index: 10;
+    filter: brightness(1.2);
+}
+
+/* Custom Tooltip */
+.heatmap-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 200ms var(--ease-out);
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.heatmap-cell:hover .heatmap-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-12px);
+}
+
+.tooltip-count {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.tooltip-date {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Footer & Legend */
+.heatmap-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-1);
+}
+
+.heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.legend-box {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}

@@ -1,0 +1,37 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "users",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "isPublic",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "xp.totalXp",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "users",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "isPublic",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "area",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "xp.totalXp",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

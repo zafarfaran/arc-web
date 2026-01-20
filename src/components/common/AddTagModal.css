@@ -1,0 +1,123 @@
+/* ========================================
+   Add Tag Modal - Slide Up Animation
+   ======================================== */
+
+.add-tag-modal {
+    max-width: 400px;
+}
+
+/* Slide Up Animation */
+.modal-slide-up {
+    animation: slideUp 400ms var(--ease-out);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-fade-in {
+    animation: fadeIn 300ms var(--ease-out);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Input Group Spacing */
+.add-tag-modal .input-group {
+    margin-top: var(--space-5);
+}
+
+.add-tag-modal .input-group:first-child {
+    margin-top: 0;
+}
+
+/* Clean Input */
+.input-clean {
+    width: 100%;
+    font-size: 14px;
+    padding: var(--space-3);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    transition: all 300ms var(--ease-out);
+}
+
+.input-clean:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.input-clean::placeholder {
+    color: var(--text-muted);
+}
+
+/* Minimal Label */
+.input-label-minimal {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+    display: block;
+}
+
+/* Color Picker */
+.color-picker-minimal {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.color-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 300ms var(--ease-out);
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+}
+
+.color-dot.selected {
+    border-color: var(--text);
+    transform: scale(1.15);
+}
+
+/* Preview */
+.tag-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    color: var(--text);
+}
+
+.tag-preview .tag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}

@@ -1,0 +1,155 @@
+.global-xp-notifications {
+    position: fixed;
+    /* Position near the XP widget on the right */
+    right: calc(var(--space-4) + 100px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-2);
+    pointer-events: none;
+    z-index: 10000;
+}
+
+.xp-notification {
+    background: rgba(20, 20, 22, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    border-left: 3px solid var(--notif-color);
+}
+
+.xp-notification.xp {
+    animation: xpFlyToWidget 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.xp-notification.rank {
+    padding: var(--space-5);
+    background: linear-gradient(135deg, rgba(20, 20, 22, 0.95) 0%, rgba(249, 115, 22, 0.1) 100%);
+    border-color: var(--notif-color);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--notif-color);
+    animation: rankUpPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), fadeOutUp 0.5s ease-in 3.5s forwards;
+}
+
+.xp-gain-value {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--notif-color);
+    font-family: var(--font-mono);
+    text-shadow: 0 0 10px var(--notif-color);
+}
+
+.rank-up-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.rank-up-label {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--notif-color);
+    text-transform: uppercase;
+}
+
+.rank-up-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* XP flies toward the widget on the right and fades */
+@keyframes xpFlyToWidget {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.8);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(60px) scale(0.6);
+    }
+}
+
+@keyframes rankUpPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(20px);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes fadeOutUp {
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+}
+
+/* Light mode */
+[data-theme="light"] .xp-notification {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile - Position above the dock */
+@media (max-width: 768px) {
+    .global-xp-notifications {
+        top: calc(var(--space-4) + 50px);
+        right: var(--space-4);
+        transform: none;
+        align-items: flex-end;
+    }
+
+    .xp-notification.xp {
+        animation: xpFlyDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+}
+
+@keyframes xpFlyDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.8);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.6);
+    }
+}

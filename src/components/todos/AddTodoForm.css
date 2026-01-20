@@ -1,0 +1,150 @@
+/* ========================================
+   Add Todo Form - Clean
+   ======================================== */
+
+.add-todo-modal {
+    max-width: 400px;
+}
+
+.add-todo-modal .input-group.has-error .input {
+    border-color: var(--error);
+}
+
+.error-message {
+    font-size: 11px;
+    color: var(--error);
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.add-todo-modal .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.add-todo-modal .input-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.add-todo-modal .input-label svg {
+    width: 13px;
+    height: 13px;
+    opacity: 0.6;
+}
+
+/* Priority Buttons */
+.priority-buttons {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.priority-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-xs);
+    font-weight: 500;
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.priority-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.priority-btn.selected {
+    background: color-mix(in srgb, var(--priority-color) 12%, transparent);
+    border-color: color-mix(in srgb, var(--priority-color) 40%, transparent);
+    color: var(--priority-color);
+}
+
+.priority-btn .priority-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* Tags Grid */
+.add-todo-modal .tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.add-todo-modal .tag-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-xs);
+    font-weight: 500;
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.add-todo-modal .tag-button:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.add-todo-modal .tag-button.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.add-todo-modal .tag-button .tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.add-todo-modal .tag-button.selected .tag-dot {
+    background: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Date Input */
+.add-todo-modal input[type="date"] {
+    color-scheme: dark;
+}
