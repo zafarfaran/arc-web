@@ -28,6 +28,7 @@ export interface User {
   isPro: boolean;
   xp: UserXP;
   isPublic: boolean;
+  showLocationOnMap: boolean; // Whether to show user's pin on the map (still appears in leaderboard list)
   location?: { lat: number; lng: number } | string; // Coordinates or encrypted string for 50-mile radius leaderboard
 }
 
@@ -62,6 +63,7 @@ export interface LeaderboardEntry {
   totalXp: number;
   distance?: number; // Distance in miles (for nearby leaderboard)
   location?: { lat: number; lng: number }; // Stable coordinates for map display
+  showLocationOnMap?: boolean; // Whether to show pin on map (default true)
 }
 
 // Rank thresholds

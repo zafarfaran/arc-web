@@ -2,8 +2,8 @@
 // Pomodoro Timer Component - Minimal Style
 // ========================================
 
-import { useState } from 'react';
-import { Play, Pause, Square, SkipForward, Target, Timer, Coffee, Sunset } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Play, Pause, Square, SkipForward, Target, Timer, Coffee, Sunset, Settings } from 'lucide-react';
 import { useApp } from '../../contexts/AppContext';
 import { useTimerContext } from '../../contexts/TimerContext';
 import { formatTime } from '../../utils/helpers';
@@ -13,8 +13,30 @@ import SpotifyWidget from './SpotifyWidget';
 import './PomodoroTimer.css';
 
 export default function PomodoroTimer() {
-    const { state: appState } = useApp();
+    const { state: appState, updateTimerSettings } = useApp();
     const [showGoalModal, setShowGoalModal] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
+    const settingsRef = useRef<HTMLDivElement>(null);
+
+    // Close settings when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+                setShowSettings(false);
+            }
+        };
+        if (showSettings) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showSettings]);
+
+    const handleSettingChange = (key: 'focusDuration' | 'shortBreakDuration' | 'longBreakDuration', value: string | number) => {
+        const numValue = typeof value === 'string' ? parseInt(value, 10) : value;
+        if (!isNaN(numValue) && numValue >= 1 && numValue <= 120) {
+            updateTimerSettings({ [key]: numValue });
+        }
+    };
 
     const {
         timerState,
@@ -110,10 +132,64 @@ export default function PomodoroTimer() {
                 {/* Controls */}
                 <div className="focus-controls">
                     {timerState.status === 'idle' ? (
-                        <button className="focus-btn primary" onClick={handleStartClick}>
-                            <Play size={18} />
-                            <span>Start</span>
-                        </button>
+                        <>
+                            <div className="timer-settings-wrapper" ref={settingsRef}>
+                                <button
+                                    className="focus-btn secondary"
+                                    onClick={() => setShowSettings(!showSettings)}
+                                    title="Timer Settings"
+                                >
+                                    <Settings size={16} />
+                                </button>
+                                {showSettings && (
+                                    <div className="timer-settings-popup">
+                                        <div className="settings-row">
+                                            <label>Focus</label>
+                                            <div className="settings-input-group">
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="120"
+                                                    value={appState.timerSettings.focusDuration}
+                                                    onChange={(e) => handleSettingChange('focusDuration', e.target.value)}
+                                                />
+                                                <span className="settings-unit">min</span>
+                                            </div>
+                                        </div>
+                                        <div className="settings-row">
+                                            <label>Short Break</label>
+                                            <div className="settings-input-group">
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="120"
+                                                    value={appState.timerSettings.shortBreakDuration}
+                                                    onChange={(e) => handleSettingChange('shortBreakDuration', e.target.value)}
+                                                />
+                                                <span className="settings-unit">min</span>
+                                            </div>
+                                        </div>
+                                        <div className="settings-row">
+                                            <label>Long Break</label>
+                                            <div className="settings-input-group">
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="120"
+                                                    value={appState.timerSettings.longBreakDuration}
+                                                    onChange={(e) => handleSettingChange('longBreakDuration', e.target.value)}
+                                                />
+                                                <span className="settings-unit">min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <button className="focus-btn primary" onClick={handleStartClick}>
+                                <Play size={18} />
+                                <span>Start</span>
+                            </button>
+                        </>
                     ) : (
                         <>
                             <button className="focus-btn secondary" onClick={stop}>

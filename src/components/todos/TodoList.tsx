@@ -10,6 +10,7 @@ import {
     pointerWithin,
     KeyboardSensor,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
     type DragEndEvent,
@@ -168,6 +169,12 @@ export default function TodoList() {
         useSensor(PointerSensor, {
             activationConstraint: {
                 distance: 8,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 200,
+                tolerance: 8,
             },
         }),
         useSensor(KeyboardSensor, {

@@ -272,11 +272,20 @@
     z-index: 10;
 }
 
+/* Summary content - horizontal layout */
+.habit-card-summary .habit-summary-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+}
+
 .habit-card-summary .habit-grip-hint {
     color: rgba(0, 0, 0, 0.2);
     margin-left: auto;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .habit-card-summary.dragging {
@@ -295,6 +304,9 @@
 .habit-card-summary .habit-info {
     flex: 1;
     min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .habit-card-summary .habit-name {
@@ -310,7 +322,7 @@
     font-size: 11px;
     font-weight: 700;
     color: rgba(0, 0, 0, 0.5);
-    margin-top: 2px;
+    flex-shrink: 0;
 }
 
 /* Dragging state */
@@ -498,6 +510,16 @@
     min-width: 0;
 }
 
+/* Mobile: Make entire card taller for easier tapping */
+@media (pointer: coarse) {
+    .compact-habit-card {
+        min-height: 44px;
+        padding: var(--space-2) var(--space-3);
+        gap: var(--space-3);
+        border-radius: 8px;
+    }
+}
+
 .compact-habit-card:hover {
     box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.2);
     z-index: 10;
@@ -519,6 +541,7 @@
     cursor: pointer;
     transition: all 150ms var(--ease-out);
     flex-shrink: 0;
+    position: relative;
 }
 
 .compact-checkbox:hover {
@@ -532,12 +555,44 @@
     color: #fff;
 }
 
+/* Mobile/Touch: Make checkbox larger with expanded touch area */
+@media (pointer: coarse) {
+    .compact-checkbox {
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+    }
+
+    /* Invisible touch target expansion */
+    .compact-checkbox::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+    }
+
+    .compact-checkbox.checked svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
 .compact-habit-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     color: rgba(0, 0, 0, 0.5);
     flex-shrink: 0;
+}
+
+/* Mobile/Touch: Larger icon */
+@media (pointer: coarse) {
+    .compact-habit-icon svg {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .compact-habit-name {
@@ -553,6 +608,13 @@
 .compact-habit-name.done {
     text-decoration: line-through;
     color: rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile/Touch: Larger text for readability */
+@media (pointer: coarse) {
+    .compact-habit-name {
+        font-size: 13px;
+    }
 }
 
 /* Remove from day button */
@@ -579,6 +641,20 @@
 .remove-from-day:hover {
     background: var(--error);
     color: #fff;
+}
+
+/* Mobile/Touch: Larger remove button, always visible */
+@media (pointer: coarse) {
+    .remove-from-day {
+        width: 24px;
+        height: 24px;
+        opacity: 0.5;
+    }
+
+    .remove-from-day svg {
+        width: 12px;
+        height: 12px;
+    }
 }
 
 /* Light mode - softer pastel colors for compact cards */
@@ -1045,4 +1121,42 @@
     .habit-card-summary {
         min-width: 160px;
     }
+}
+
+/* ========================================
+   Touch-Friendly Drag Styles
+   ======================================== */
+
+/* Habit card touch improvements */
+.habit-card-summary {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Visual feedback when touch-holding to drag */
+@media (pointer: coarse) {
+    .habit-card-summary {
+        cursor: grab;
+        transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    }
+
+    .habit-card-summary:active {
+        cursor: grabbing;
+        transform: scale(1.02);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Larger touch targets for day tabs */
+    .day-tab {
+        min-height: 44px;
+    }
+}
+
+/* Dragging state styles */
+.habit-card-summary.dragging {
+    opacity: 0.9;
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
 }

@@ -216,10 +216,10 @@ export default function HabitTracker() {
     const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
     const pointerSensor = useSensor(PointerSensor, {
-        activationConstraint: { distance: 5 },
+        activationConstraint: { distance: 8 },
     });
     const touchSensor = useSensor(TouchSensor, {
-        activationConstraint: { delay: 100, tolerance: 5 },
+        activationConstraint: { delay: 200, tolerance: 8 },
     });
     const keyboardSensor = useSensor(KeyboardSensor);
     const sensors = useSensors(pointerSensor, touchSensor, keyboardSensor);

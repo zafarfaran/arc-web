@@ -7,7 +7,7 @@ dist
 dist-ssr
 build
 .output
-
+scripts
 # Environment variables
 .env
 .env.local

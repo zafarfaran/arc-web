@@ -15,12 +15,43 @@ import {
     Terminal,
     Wand2,
     RefreshCw,
-    LogOut
+    LogOut,
+    Check,
+    MapPin
 } from 'lucide-react';
 import { useApp } from '../../contexts/AppContext';
 import { seedDummyUsers, cleanupDummyUsers } from '../../utils/seedData';
 import XPDisplay from '../xp/XPDisplay';
 import './SettingsPage.css';
+
+// Avatar options using DiceBear API - Professional styles
+const AVATAR_STYLES = [
+    { style: 'lorelei', label: 'Illustrated' },
+    { style: 'avataaars', label: 'Cartoon' },
+    { style: 'notionists', label: 'Minimal' },
+    { style: 'micah', label: 'Modern' },
+    { style: 'personas', label: 'Professional' },
+    { style: 'adventurer', label: 'Adventurer' },
+    { style: 'big-ears', label: 'Friendly' },
+    { style: 'bottts', label: 'Robots' },
+    { style: 'thumbs', label: 'Abstract' },
+    { style: 'fun-emoji', label: 'Emoji' },
+    { style: 'pixel-art', label: 'Pixel' },
+    { style: 'miniavs', label: 'Mini' },
+];
+
+const AVATAR_SEEDS = [
+    'Felix', 'Luna', 'Max', 'Bella', 'Charlie', 'Lucy', 'Cooper', 'Daisy',
+    'Rocky', 'Lily', 'Bear', 'Zoe', 'Duke', 'Stella', 'Zeus', 'Chloe',
+    'Oscar', 'Penny', 'Archie', 'Ruby', 'Winston', 'Rosie', 'Louie', 'Gracie',
+    'Murphy', 'Olive', 'Toby', 'Hazel', 'Jackson', 'Coco', 'Bruno', 'Willow',
+    'Apollo', 'Ivy', 'Milo', 'Nala', 'Tucker', 'Sadie', 'Beau', 'Maple',
+    'Scout', 'Pearl', 'Finn', 'Ginger', 'Leo', 'Sage', 'Rex', 'Violet',
+];
+
+function generateAvatarUrl(style: string, seed: string): string {
+    return `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
+}
 
 {/* Helper component for stepper */ }
 function NumberStepper({ value, onChange, step = 1, min = 1 }: { value: number, onChange: (val: number) => void, step?: number, min?: number }) {
@@ -44,6 +75,34 @@ export default function SettingsPage() {
     // Local state for non-persisted settings (for demo)
     const [soundEnabled, setSoundEnabled] = useState(true);
     const [hapticsEnabled, setHapticsEnabled] = useState(false);
+
+    // Avatar picker state
+    const [showAvatarPicker, setShowAvatarPicker] = useState(false);
+    const [selectedStyle, setSelectedStyle] = useState('avataaars');
+    const [savingAvatar, setSavingAvatar] = useState(false);
+
+    // Handle avatar selection
+    const handleSelectAvatar = async (avatarUrl: string) => {
+        setSavingAvatar(true);
+        try {
+            await updateUserProfile({ avatar: avatarUrl });
+            setShowAvatarPicker(false);
+        } catch (error) {
+            console.error('Failed to update avatar:', error);
+        }
+        setSavingAvatar(false);
+    };
+
+    // Remove avatar
+    const handleRemoveAvatar = async () => {
+        setSavingAvatar(true);
+        try {
+            await updateUserProfile({ avatar: null });
+        } catch (error) {
+            console.error('Failed to remove avatar:', error);
+        }
+        setSavingAvatar(false);
+    };
 
     // Developer state
     const [seedStatus, setSeedStatus] = useState<string | null>(null);
@@ -235,12 +294,19 @@ export default function SettingsPage() {
                 <div className="settings-section-body">
                     {state.user ? (
                         <div className="profile-preview">
-                            <div className="profile-avatar">
+                            <div
+                                className="profile-avatar clickable"
+                                onClick={() => setShowAvatarPicker(!showAvatarPicker)}
+                                title="Click to change avatar"
+                            >
                                 {state.user.avatar ? (
                                     <img src={state.user.avatar} alt={state.user.name} style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
                                 ) : (
                                     <User size={32} />
                                 )}
+                                <div className="avatar-edit-overlay">
+                                    <span>Edit</span>
+                                </div>
                             </div>
                             <div className="profile-details">
                                 <span className="profile-name">{state.user.name}</span>
@@ -255,6 +321,105 @@ export default function SettingsPage() {
                             <div className="profile-details">
                                 <span className="profile-name">Guest User</span>
                                 <span className="profile-email">Sign in to sync your data</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Avatar Picker Modal */}
+                    {state.user && showAvatarPicker && (
+                        <div className="avatar-modal-overlay" onClick={() => setShowAvatarPicker(false)}>
+                            <div className="avatar-modal" onClick={(e) => e.stopPropagation()}>
+                                {/* Modal Header */}
+                                <div className="avatar-modal-header">
+                                    <div className="avatar-modal-title-section">
+                                        <h3 className="avatar-modal-title">Choose Avatar</h3>
+                                        <p className="avatar-modal-subtitle">Select a style and pick your avatar</p>
+                                    </div>
+                                    <button
+                                        className="avatar-modal-close"
+                                        onClick={() => setShowAvatarPicker(false)}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+
+                                {/* Current Avatar Preview */}
+                                <div className="avatar-preview-section">
+                                    <div className="avatar-preview-current">
+                                        {state.user.avatar ? (
+                                            <img src={state.user.avatar} alt="Current avatar" />
+                                        ) : (
+                                            <User size={40} />
+                                        )}
+                                    </div>
+                                    <div className="avatar-preview-info">
+                                        <span className="avatar-preview-label">Current Avatar</span>
+                                        {state.user.avatar && (
+                                            <button
+                                                className="avatar-remove-link"
+                                                onClick={handleRemoveAvatar}
+                                                disabled={savingAvatar}
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Style Selector */}
+                                <div className="avatar-style-section">
+                                    <span className="avatar-section-label">Style</span>
+                                    <div className="avatar-style-list">
+                                        {AVATAR_STYLES.map((s) => (
+                                            <button
+                                                key={s.style}
+                                                className={`avatar-style-chip ${selectedStyle === s.style ? 'active' : ''}`}
+                                                onClick={() => setSelectedStyle(s.style)}
+                                            >
+                                                <img
+                                                    src={generateAvatarUrl(s.style, 'preview')}
+                                                    alt={s.label}
+                                                    className="avatar-style-preview"
+                                                />
+                                                <span>{s.label}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Avatar Grid */}
+                                <div className="avatar-grid-section">
+                                    <span className="avatar-section-label">Choose Avatar</span>
+                                    <div className="avatar-grid">
+                                        {AVATAR_SEEDS.map((seed) => {
+                                            const avatarUrl = generateAvatarUrl(selectedStyle, seed);
+                                            const isSelected = state.user?.avatar === avatarUrl;
+                                            return (
+                                                <button
+                                                    key={seed}
+                                                    className={`avatar-option ${isSelected ? 'selected' : ''}`}
+                                                    onClick={() => handleSelectAvatar(avatarUrl)}
+                                                    disabled={savingAvatar}
+                                                >
+                                                    <img src={avatarUrl} alt={seed} />
+                                                    {isSelected && (
+                                                        <div className="avatar-selected-badge">
+                                                            <Check size={12} />
+                                                        </div>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Saving indicator */}
+                                {savingAvatar && (
+                                    <div className="avatar-saving-indicator">
+                                        <RefreshCw size={14} className="spin" />
+                                        <span>Saving...</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -299,6 +464,27 @@ export default function SettingsPage() {
                                     <span className={`badge ${state.user.location ? 'active' : ''}`}>
                                         {state.user.location ? 'Active' : 'Not Set'}
                                     </span>
+                                </div>
+                            </div>
+
+                            {/* Show Location on Map Toggle */}
+                            <div className="settings-row">
+                                <div className="settings-info">
+                                    <span className="settings-label">
+                                        <MapPin size={14} style={{ marginRight: 6 }} />
+                                        Show on Map
+                                    </span>
+                                    <span className="settings-description">Display your pin on the leaderboard map</span>
+                                </div>
+                                <div className="settings-control">
+                                    <label className="toggle-switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={state.user.showLocationOnMap}
+                                            onChange={() => updateUserProfile({ showLocationOnMap: !state.user?.showLocationOnMap })}
+                                        />
+                                        <span className="toggle-slider"></span>
+                                    </label>
                                 </div>
                             </div>
 

@@ -18,12 +18,13 @@ export default function SortableGoalCard({ goal, onClick }: SortableGoalCardProp
         isDragging,
     } = useSortable({ id: goal.id });
 
-    const style = {
+    const style: React.CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.5 : 1,
         zIndex: isDragging ? 100 : 'auto',
-        position: 'relative' as const,
+        position: 'relative',
+        touchAction: 'none',
     };
 
     return (

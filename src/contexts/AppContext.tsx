@@ -451,7 +451,7 @@ interface AppContextType {
     updateTag: (id: string, updates: Partial<Tag>) => Promise<void>;
     deleteTag: (id: string) => Promise<void>;
     updateTimerSettings: (settings: Partial<TimerSettings>) => Promise<void>;
-    updateUserProfile: (updates: { isPublic?: boolean; location?: { lat: number; lng: number } }) => Promise<void>;
+    updateUserProfile: (updates: { isPublic?: boolean; showLocationOnMap?: boolean; location?: { lat: number; lng: number } | null; avatar?: string | null }) => Promise<void>;
     login: (user: User) => void;
     logout: () => Promise<void>;
 }
@@ -525,9 +525,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
                     name: firebaseUser.displayName || 'User',
                     email: firebaseUser.email || '',
                     isPro: false, // Assuming isPro is not in Firestore or defaults to false
-                    avatar: firebaseUser.photoURL || undefined,
+                    // Use custom avatar from Firestore if set, otherwise fall back to Google photo
+                    avatar: userData.avatar || firebaseUser.photoURL || undefined,
                     xp: userXp,
                     isPublic: userData.isPublic || false,
+                    showLocationOnMap: userData.showLocationOnMap !== false, // Default to true
                     location: location, // Use the potentially decrypted location
                 };
                 dispatch({ type: 'LOGIN', payload: user });
@@ -1213,38 +1215,57 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const updateUserProfile = async (updates: { isPublic?: boolean; location?: { lat: number; lng: number } }) => {
+    const updateUserProfile = async (updates: { isPublic?: boolean; showLocationOnMap?: boolean; location?: { lat: number; lng: number } | null; avatar?: string | null }) => {
         if (!state.user) return;
 
         const userRef = doc(db, 'users', state.user.id);
 
-        // Apply jitter and encryption if location is being updated
-        let locationToStore: any = updates.location;
-        let decryptedLocationForState = state.user.location; // Default to current location
+        // Build Firestore update object - only include fields that are being updated
+        const firestoreUpdate: Record<string, any> = {};
 
+        // Handle isPublic
+        if (updates.isPublic !== undefined) {
+            firestoreUpdate.isPublic = updates.isPublic;
+        }
+
+        // Handle showLocationOnMap
+        if (updates.showLocationOnMap !== undefined) {
+            firestoreUpdate.showLocationOnMap = updates.showLocationOnMap;
+        }
+
+        // Handle avatar
+        if (updates.avatar !== undefined) {
+            // If null, we want to remove the avatar, otherwise set it
+            firestoreUpdate.avatar = updates.avatar;
+        }
+
+        // Handle location with jitter and encryption
+        let decryptedLocationForState = state.user.location; // Default to current location
         if (updates.location !== undefined) {
             if (updates.location && typeof updates.location === 'object') {
                 const jittered = addLocationJitter(updates.location.lat, updates.location.lng);
-                locationToStore = encryptLocation(jittered);
-                decryptedLocationForState = jittered; // The jittered location is what we want in the app's state
+                firestoreUpdate.location = encryptLocation(jittered);
+                decryptedLocationForState = jittered;
             } else if (updates.location === null) {
-                locationToStore = null;
+                firestoreUpdate.location = null;
                 decryptedLocationForState = undefined;
             }
         }
 
+        // Build updated user for local state
         const updatedUser: User = {
             ...state.user,
-            ...updates,
-            location: decryptedLocationForState, // Ensure we don't accidentally clear it if not in updates
+            ...(updates.isPublic !== undefined && { isPublic: updates.isPublic }),
+            ...(updates.showLocationOnMap !== undefined && { showLocationOnMap: updates.showLocationOnMap }),
+            ...(updates.avatar !== undefined && { avatar: updates.avatar || undefined }),
+            ...(updates.location !== undefined && { location: decryptedLocationForState }),
         };
 
         try {
-            await updateDoc(userRef, {
-                isPublic: updates.isPublic !== undefined ? updates.isPublic : state.user.isPublic,
-                location: locationToStore, // Store the encrypted one in Firestore
-            });
-
+            // Only update Firestore if there are changes
+            if (Object.keys(firestoreUpdate).length > 0) {
+                await updateDoc(userRef, firestoreUpdate);
+            }
             dispatch({ type: 'SET_USER', payload: updatedUser });
         } catch (e) { console.error("Firestore Error updating user profile:", e); }
     };

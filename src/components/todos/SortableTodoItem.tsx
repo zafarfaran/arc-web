@@ -21,11 +21,12 @@ export default function SortableTodoItem({ todo }: SortableTodoItemProps) {
         isDragging,
     } = useSortable({ id: todo.id });
 
-    const style = {
+    const style: React.CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.5 : 1,
         zIndex: isDragging ? 100 : 'auto',
+        touchAction: 'none',
     };
 
     return (

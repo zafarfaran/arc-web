@@ -815,3 +815,37 @@
         height: 28px;
     }
 }
+
+/* ========================================
+   Touch-Friendly Drag Styles
+   ======================================== */
+
+/* Draggable card touch improvements */
+.todo-item {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Visual feedback when touch-holding to drag */
+@media (pointer: coarse) {
+    .todo-item {
+        cursor: grab;
+        transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    }
+
+    .todo-item:active {
+        cursor: grabbing;
+        transform: scale(1.02);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Dragging state styles */
+.todo-item.dragging,
+.todo-item[data-dragging="true"] {
+    opacity: 0.9;
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}

@@ -94,9 +94,7 @@ function AppLayout() {
                 </PageTransition>
               } />
               <Route path="/leaderboard" element={
-                <PageTransition>
-                  <LeaderboardMap />
-                </PageTransition>
+                <LeaderboardMap />
               } />
             </Route>
           </Routes>

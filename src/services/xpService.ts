@@ -249,6 +249,7 @@ export async function getNearbyLeaderboard(
                     totalXp: data.xp?.totalXp || 0,
                     distance: Math.round(distance),
                     location: location,
+                    showLocationOnMap: data.showLocationOnMap !== false, // Default to true
                 });
             }
         });
@@ -292,6 +293,208 @@ export async function getGlobalLeaderboard(maxResults: number = 10): Promise<Lea
     } catch (error) {
         console.error('Failed to fetch global leaderboard:', error);
         return [];
+    }
+}
+
+// ========================================
+// Scalable Global Leaderboard
+// ========================================
+
+export type LeaderboardPeriod = 'weekly' | 'monthly' | 'allTime';
+
+export interface LeaderboardResult {
+    entries: LeaderboardEntry[];
+    lastDoc: any | null;
+    hasMore: boolean;
+    totalCount?: number;
+}
+
+export interface UserRankInfo {
+    rank: number;
+    totalXp: number;
+    percentile: number;
+}
+
+// Fetch paginated global leaderboard
+// For production: This should query a pre-aggregated leaderboard collection
+// that gets updated via Cloud Functions periodically
+// Note: period parameter is for future use with weekly/monthly aggregations
+export async function fetchLeaderboard(
+    _period: LeaderboardPeriod = 'allTime',
+    pageSize: number = 20,
+    lastDocSnapshot: any = null
+): Promise<LeaderboardResult> {
+    try {
+        const usersRef = collection(db, 'users');
+
+        // Build query based on period
+        // Note: For weekly/monthly, in production you'd query a separate
+        // aggregated collection. For now, we use all-time XP.
+        let q = query(
+            usersRef,
+            where('isPublic', '==', true),
+            orderBy('xp.totalXp', 'desc'),
+            limit(pageSize + 1) // Fetch one extra to check if there's more
+        );
+
+        if (lastDocSnapshot) {
+            q = query(
+                usersRef,
+                where('isPublic', '==', true),
+                orderBy('xp.totalXp', 'desc'),
+                startAfter(lastDocSnapshot),
+                limit(pageSize + 1)
+            );
+        }
+
+        const snapshot = await getDocs(q);
+        const entries: LeaderboardEntry[] = [];
+        let lastDoc = null;
+
+        const docs = snapshot.docs;
+        const hasMore = docs.length > pageSize;
+        const docsToProcess = hasMore ? docs.slice(0, pageSize) : docs;
+
+        docsToProcess.forEach((docSnap, index) => {
+            const data = docSnap.data();
+
+            // Decrypt location if present
+            let location = undefined;
+            if (data.location) {
+                try {
+                    location = typeof data.location === 'string'
+                        ? decryptLocation(data.location)
+                        : data.location;
+                } catch {
+                    // If decryption fails, location stays undefined
+                }
+            }
+
+            entries.push({
+                userId: docSnap.id,
+                displayName: data.name || 'Anonymous',
+                avatar: data.avatar,
+                rank: data.xp?.rank || 'novice',
+                totalXp: data.xp?.totalXp || 0,
+                location,
+                showLocationOnMap: data.showLocationOnMap !== false, // Default to true
+            });
+
+            if (index === docsToProcess.length - 1) {
+                lastDoc = docSnap;
+            }
+        });
+
+        return {
+            entries,
+            lastDoc,
+            hasMore,
+        };
+    } catch (error) {
+        console.error('Failed to fetch leaderboard:', error);
+        return { entries: [], lastDoc: null, hasMore: false };
+    }
+}
+
+// Get user's global rank
+// For production: Store rank in user doc, update via Cloud Function
+export async function getUserGlobalRank(userId: string): Promise<UserRankInfo | null> {
+    try {
+        // First get the user's XP
+        const userRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userRef);
+
+        if (!userDoc.exists()) {
+            return null;
+        }
+
+        const userData = userDoc.data();
+        const userXp = userData.xp?.totalXp || 0;
+
+        // Count users with more XP (this is O(n) - for production, use a rank field)
+        const usersRef = collection(db, 'users');
+        const higherRankedQuery = query(
+            usersRef,
+            where('isPublic', '==', true),
+            where('xp.totalXp', '>', userXp)
+        );
+
+        const higherRankedSnapshot = await getDocs(higherRankedQuery);
+        const rank = higherRankedSnapshot.size + 1;
+
+        // Get total count for percentile (cache this in production)
+        const totalQuery = query(
+            usersRef,
+            where('isPublic', '==', true)
+        );
+        const totalSnapshot = await getDocs(totalQuery);
+        const totalUsers = totalSnapshot.size;
+
+        const percentile = totalUsers > 0
+            ? Math.round(((totalUsers - rank) / totalUsers) * 100)
+            : 0;
+
+        return {
+            rank,
+            totalXp: userXp,
+            percentile,
+        };
+    } catch (error) {
+        console.error('Failed to get user rank:', error);
+        return null;
+    }
+}
+
+// Get leaderboard with user context (entries around user's position)
+export async function getLeaderboardWithUserContext(
+    userId: string,
+    topCount: number = 10
+): Promise<{
+    topEntries: LeaderboardEntry[];
+    userRank: UserRankInfo | null;
+    nearbyEntries: LeaderboardEntry[];
+}> {
+    try {
+        // Get top entries
+        const topResult = await fetchLeaderboard('allTime', topCount);
+
+        // Get user's rank
+        const userRank = await getUserGlobalRank(userId);
+
+        // If user is not in top entries, get entries around their position
+        let nearbyEntries: LeaderboardEntry[] = [];
+        const isInTop = topResult.entries.some(e => e.userId === userId);
+
+        if (!isInTop && userRank && userRank.rank > topCount) {
+            // For production: Query users around the user's XP
+            // This is a simplified version
+            const userRef = doc(db, 'users', userId);
+            const userDoc = await getDoc(userRef);
+
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                nearbyEntries = [{
+                    userId: userId,
+                    displayName: userData.name || 'Anonymous',
+                    avatar: userData.avatar,
+                    rank: userData.xp?.rank || 'novice',
+                    totalXp: userData.xp?.totalXp || 0,
+                }];
+            }
+        }
+
+        return {
+            topEntries: topResult.entries,
+            userRank,
+            nearbyEntries,
+        };
+    } catch (error) {
+        console.error('Failed to get leaderboard with context:', error);
+        return {
+            topEntries: [],
+            userRank: null,
+            nearbyEntries: [],
+        };
     }
 }
 

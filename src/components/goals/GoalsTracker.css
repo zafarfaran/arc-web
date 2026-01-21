@@ -571,3 +571,37 @@
         gap: var(--space-2);
     }
 }
+
+/* ========================================
+   Touch-Friendly Drag Styles
+   ======================================== */
+
+/* Goal card touch improvements */
+.goal-card {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Visual feedback when touch-holding to drag */
+@media (pointer: coarse) {
+    .goal-card {
+        cursor: grab;
+        transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    }
+
+    .goal-card:active {
+        cursor: grabbing;
+        transform: scale(1.02);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Dragging state styles */
+.goal-card.dragging,
+.goal-card[data-dragging="true"] {
+    opacity: 0.9;
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
