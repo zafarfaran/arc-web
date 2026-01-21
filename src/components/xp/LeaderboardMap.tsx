@@ -241,12 +241,6 @@ export default function LeaderboardMap() {
         return (currentPage - 1) * ENTRIES_PER_PAGE + index + 1;
     };
 
-    const scrollToUser = useCallback(() => {
-        if (userEntryRef.current) {
-            userEntryRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }, []);
-
     const defaultCenter: [number, number] = [20, 0];
     const mapCenter: [number, number] = userLocation
         ? [userLocation.lat, userLocation.lng]
